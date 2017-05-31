@@ -39,3 +39,25 @@ regressor.fit(X_train, y_train)
 
 # Predicting the Test set results
 y_pred = regressor.predict(X_test)
+
+# Building the optimal model using Backward Elimination
+import statsmodels.formula.api as sm
+# must add array of 1s for x0, see notes page 66.
+X = np.append(arr = np.ones((50, 1)).astype(int), values = X, axis = 1)
+X_opt = X[:, [0, 1, 2, 3, 4, 5]]
+regressor_OLS = sm.OLS(endog = y, exog = X_opt).fit()
+regressor_OLS.summary()
+
+# Remove the variable with the highest P value until all variables have a SL below 0.05
+X_opt = X[:, [0, 1, 3, 4, 5]]
+regressor_OLS = sm.OLS(endog = y, exog = X_opt).fit()
+regressor_OLS.summary()
+X_opt = X[:, [0, 3, 4, 5]]
+regressor_OLS = sm.OLS(endog = y, exog = X_opt).fit()
+regressor_OLS.summary()
+X_opt = X[:, [0, 3, 5]]
+regressor_OLS = sm.OLS(endog = y, exog = X_opt).fit()
+regressor_OLS.summary()
+X_opt = X[:, [0, 3]]
+regressor_OLS = sm.OLS(endog = y, exog = X_opt).fit()
+regressor_OLS.summary()
